@@ -1,24 +1,36 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 :root {
-  --navy: #1b2e5e;
-  --navy-light: #243a75;
-  --orange: #f47c20;
-  --gray-bg: #f0f4fb;
-  --gray-border: #d1d9e8;
-  --text-main: #1e1e1e;
-  --text-muted: #6b7a99;
-  --error: #dc2626;
-  --white: #ffffff;
+  color: #13223f;
+  background: #f4efe7;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  background: var(--gray-bg);
-  color: var(--text-main);
   min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
 }

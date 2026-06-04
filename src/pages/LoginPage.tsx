@@ -1,7 +1,7 @@
-import { useState, FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { authService } from '../services/auth'
+import { FormEvent, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo-app.png'
+import { authService } from '../services/auth'
 import styles from './LoginPage.module.css'
 
 export default function LoginPage() {
@@ -12,14 +12,15 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault()
     setError('')
     setLoading(true)
+
     try {
       const { token } = await authService.login(email, password)
       authService.saveSession(token)
-      navigate('/dashboard')
+      navigate('/')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error inesperado')
     } finally {
@@ -29,91 +30,76 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.logoContainer}>
+      <section className={styles.hero}>
         <img src={logo} alt="Logística Inteligente" className={styles.logo} />
-        <div className={styles.titleContainer}>
-          <h1 className={styles.title}>Iniciar sesión</h1>
-          <h3 className={styles.subtitle}>Ingresa tus credenciales para acceder al sistema</h3>
+        <div>
+          <p className={styles.eyebrow}>Acceso de operador</p>
+          <h1>Entregas con trazabilidad y ruteo optimizado</h1>
+          <p>
+            Iniciá sesión para administrar pedidos, generar rutas del día y actualizar
+            estados en tiempo real.
+          </p>
         </div>
-      </div>
-      <div className={styles.card}>
+      </section>
+
+      <section className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h2>Iniciar sesión</h2>
+          <p>Usá tus credenciales para entrar al panel.</p>
+        </div>
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
-          <div className={styles.field}>
-            <label htmlFor="email">Email</label>
+          <label className={styles.field}>
+            <span>Email</span>
             <input
-              id="email"
+              data-testid="login-email"
               type="email"
-              autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@ejemplo.com"
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="admin@empresa.com"
+              autoComplete="email"
               required
             />
-          </div>
+          </label>
 
-          <div className={styles.field}>
-            <label htmlFor="password">Contraseña</label>
+          <label className={styles.field}>
+            <span>Contraseña</span>
             <div className={styles.passwordWrap}>
               <input
-                id="password"
+                data-testid="login-password"
                 type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
                 placeholder="••••••••"
+                autoComplete="current-password"
                 required
               />
               <button
                 type="button"
                 className={styles.togglePassword}
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                onClick={() => setShowPassword((value) => !value)}
               >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                  >
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
+                {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-          </div>
+          </label>
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error ? <p className={styles.error} data-testid="login-error">{error}</p> : null}
 
-          <button type="submit" className={styles.btn} disabled={loading}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
+          <button
+            type="submit"
+            className={styles.submit}
+            disabled={loading}
+            data-testid="login-submit"
+          >
+            {loading ? 'Ingresando…' : 'Ingresar'}
           </button>
         </form>
-      </div>
+
+        <Link to="/tracking" className={styles.secondaryLink}>
+          Ir al tracking público
+        </Link>
+      </section>
     </div>
   )
 }
