@@ -13,6 +13,8 @@ export interface PedidoPayload {
   direccionDestino: string
   localidad: string
   fechaEntrega: string
+  lat?: number | null
+  lng?: number | null
 }
 
 export async function listPedidos(filters: PedidoFilters) {
