@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import net from 'node:net'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -11,48 +11,58 @@ const nodeExecutable = process.execPath
 const tsNodeCliPath = path.resolve(backendRoot, 'node_modules/ts-node/dist/bin.js')
 const migrationScriptPath = path.resolve(backendRoot, 'src/scripts/run-migrations.ts')
 const serverScriptPath = path.resolve(backendRoot, 'src/index.ts')
-const composeFilePath =
-  process.platform === 'win32'
-    ? path.resolve(backendRoot, 'docker-compose.test.yml')
-    : path.resolve('/mnt/c/Users/agust/OneDrive/Escritorio/DAW/TpCatedra/logistic-app-be/docker-compose.test.yml')
-
-const dockerExecutable =
-  process.platform === 'win32'
-    ? 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe'
-    : '/mnt/c/Program Files/Docker/Docker/resources/bin/docker.exe'
-
-if (!existsSync(dockerExecutable)) {
-  throw new Error(`No se encontrÃ³ Docker Desktop en ${dockerExecutable}`)
-}
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-function dockerComposeUp() {
-  const result = spawnSync(dockerExecutable, ['compose', '-f', composeFilePath, 'up', '-d'], {
-    stdio: 'inherit',
-  })
-
-  if (result.status !== 0) {
-    process.exit(result.status ?? 1)
-  }
-}
-
 async function waitForDatabase() {
+  const host = process.env.DB_HOST || 'localhost'
+  const port = parseInt(process.env.DB_PORT || '5432', 10)
+
   for (let attempt = 1; attempt <= 60; attempt += 1) {
-    const result = spawnSync(dockerExecutable, ['exec', 'logistic-app-be-test-db', 'pg_isready', '-U', 'postgres'], {
-      stdio: 'ignore',
+    const isOpen = await new Promise((resolve) => {
+      const socket = net.createConnection({ port, host })
+      socket.once('connect', () => {
+        socket.end()
+        resolve(true)
+      })
+      socket.once('error', () => resolve(false))
     })
 
-    if (result.status === 0) {
+    if (isOpen) {
       return
     }
 
     await wait(1000)
   }
 
-  throw new Error('PostgreSQL no quedÃ³ listo para los tests E2E')
+  throw new Error('PostgreSQL no quedó listo para los tests E2E')
+}
+
+function resetDatabase() {
+  // Este script arranca antes que `globalSetup` en esta versión de Playwright,
+  // así que el reset de la base de test tiene que hacerse acá (no ahí) para
+  // garantizar una base limpia antes de migrar.
+  const drop = spawnSync(nodeExecutable, ['./scripts/manage-database.mjs', 'drop', 'test'], {
+    cwd: backendRoot,
+    stdio: 'inherit',
+    env: process.env,
+  })
+
+  if (drop.status !== 0) {
+    process.exit(drop.status ?? 1)
+  }
+
+  const create = spawnSync(nodeExecutable, ['./scripts/manage-database.mjs', 'create', 'test'], {
+    cwd: backendRoot,
+    stdio: 'inherit',
+    env: process.env,
+  })
+
+  if (create.status !== 0) {
+    process.exit(create.status ?? 1)
+  }
 }
 
 async function runMigrationsWithRetry() {
@@ -75,8 +85,8 @@ async function runMigrationsWithRetry() {
   }
 }
 
-dockerComposeUp()
 await waitForDatabase()
+resetDatabase()
 await runMigrationsWithRetry()
 
 const child = spawn(nodeExecutable, [tsNodeCliPath, serverScriptPath], {

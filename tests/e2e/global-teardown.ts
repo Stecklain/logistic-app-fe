@@ -1,8 +1,10 @@
 import { execFileSync } from 'node:child_process'
-import { resolveBackendComposeFileForDocker, resolveDockerExecutable } from './runtime'
+import { resolveBackendRoot, resolveNodeExecutable } from './runtime'
 
 export default async function globalTeardown() {
-  execFileSync(resolveDockerExecutable(), ['compose', '-f', resolveBackendComposeFileForDocker(), 'down', '-v'], {
-    stdio: 'inherit',
-  })
+  execFileSync(
+    resolveNodeExecutable(),
+    ['./scripts/manage-database.mjs', 'drop', 'test'],
+    { cwd: resolveBackendRoot(), stdio: 'inherit' }
+  )
 }

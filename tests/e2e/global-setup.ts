@@ -1,24 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import net from 'node:net'
-import { resolveBackendComposeFileForDocker, resolveDockerExecutable } from './runtime'
-
-async function waitForDatabase(timeoutMs: number) {
-  const start = Date.now()
-  const dockerExecutable = resolveDockerExecutable()
-
-  while (Date.now() - start < timeoutMs) {
-    try {
-      execFileSync(dockerExecutable, ['exec', 'logistic-app-be-test-db', 'pg_isready', '-U', 'postgres'], {
-        stdio: 'ignore',
-      })
-      return
-    } catch {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-    }
-  }
-
-  throw new Error('PostgreSQL no quedÃ³ disponible dentro del timeout configurado')
-}
+import { resolveBackendRoot, resolveNodeExecutable } from './runtime'
 
 async function waitForHostPort(port: number, host: string, timeoutMs: number) {
   const start = Date.now()
@@ -44,14 +26,19 @@ async function waitForHostPort(port: number, host: string, timeoutMs: number) {
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 
-  throw new Error(`El puerto ${host}:${port} no quedÃ³ accesible dentro del timeout configurado`)
+  throw new Error(`El puerto ${host}:${port} no quedó accesible dentro del timeout configurado`)
 }
 
 export default async function globalSetup() {
-  execFileSync(resolveDockerExecutable(), ['compose', '-f', resolveBackendComposeFileForDocker(), 'up', '-d'], {
-    stdio: 'inherit',
-  })
+  await waitForHostPort(5432, '127.0.0.1', 15000)
 
-  await waitForDatabase(60000)
-  await waitForHostPort(5433, '127.0.0.1', 60000)
+  // El reset destructivo de la base de test vive en start-backend.mjs, que
+  // corre antes que este hook. Acá solo garantizamos (de forma idempotente,
+  // sin destruir nada) que la base exista por si este hook llegara a
+  // ejecutarse primero en algún escenario.
+  execFileSync(
+    resolveNodeExecutable(),
+    ['./scripts/manage-database.mjs', 'create', 'test'],
+    { cwd: resolveBackendRoot(), stdio: 'inherit' }
+  )
 }
