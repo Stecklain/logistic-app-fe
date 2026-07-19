@@ -56,8 +56,8 @@ export default function PublicTrackingPage() {
           </article>
         ) : null}
 
-        <Link to="/login" className={styles.backLink}>
-          Volver al acceso interno
+        <Link to="/privacidad" className={styles.backLink}>
+          Aviso de privacidad
         </Link>
       </div>
     </section>

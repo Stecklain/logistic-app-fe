@@ -38,27 +38,33 @@ test('creates orders, generates route, updates state and checks public tracking'
 
   await expect(page).toHaveURL(/\/$/)
 
-  await page.goto('/pedidos')
+  await page.goto('/pedidos/nuevo')
 
   await page.getByTestId('pedido-direccion').fill('Av. Santa Fe 1111')
   await page.getByTestId('pedido-localidad').fill('Buenos Aires')
   await page.getByTestId('pedido-fecha').fill('2026-06-05')
   await page.getByTestId('pedido-submit').click()
+  await expect(page).toHaveURL(/\/pedidos$/)
   await expect(page.getByTestId('pedido-card')).toHaveCount(1)
+
+  await page.goto('/pedidos/nuevo')
 
   await page.getByTestId('pedido-direccion').fill('Av. Corrientes 2222')
   await page.getByTestId('pedido-localidad').fill('Buenos Aires')
   await page.getByTestId('pedido-fecha').fill('2026-06-05')
   await page.getByTestId('pedido-submit').click()
+  await expect(page).toHaveURL(/\/pedidos$/)
   await expect(page.getByTestId('pedido-card')).toHaveCount(2)
 
   const firstCard = page.getByTestId('pedido-card').first()
   await expect(firstCard).toBeVisible()
-  const trackingText = await firstCard.locator('p').first().textContent()
+  const trackingText = await firstCard.locator('td').first().textContent()
   const trackingCode = trackingText?.trim() || ''
 
-  await firstCard.getByRole('button', { name: /marcar entregado/i }).click()
-  await expect(firstCard.getByRole('button', { name: /reabrir/i })).toBeVisible()
+  await firstCard.getByTestId('estado-select').click()
+  await page.getByTestId('estado-option-entregado').click()
+  await expect(firstCard.getByTestId('estado-select')).toContainText('Entregado')
+  await expect(firstCard.getByRole('button', { name: 'Editar' })).toBeDisabled()
 
   await page.goto('/rutas')
   await page.getByTestId('ruta-fecha').fill('2026-06-05')

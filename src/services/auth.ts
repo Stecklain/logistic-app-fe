@@ -1,5 +1,5 @@
 import { apiFetch } from './api'
-import type { LoginResponse } from '../types/domain'
+import type { AuthUser, LoginResponse } from '../types/domain'
 
 export const authService = {
   async login(email: string, password: string): Promise<LoginResponse> {
@@ -9,16 +9,27 @@ export const authService = {
     })
   },
 
-  saveSession(token: string) {
+  saveSession(token: string, user: AuthUser) {
     localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(user))
   },
 
   getToken(): string | null {
     return localStorage.getItem('token')
   },
 
+  getCurrentUser(): AuthUser | null {
+    const raw = localStorage.getItem('user')
+    return raw ? (JSON.parse(raw) as AuthUser) : null
+  },
+
+  getRole(): string | null {
+    return authService.getCurrentUser()?.role ?? null
+  },
+
   logout() {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
   },
 
   isAuthenticated(): boolean {

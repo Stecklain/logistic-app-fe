@@ -1,4 +1,10 @@
-import type { PaginatedResponse, Pedido, PedidoEstado } from '../types/domain'
+import type {
+  PaginatedResponse,
+  Pedido,
+  PedidoEstado,
+  PedidoReporte,
+  PedidosPendientesPorFecha,
+} from '../types/domain'
 import { apiFetch } from './api'
 
 export interface PedidoFilters {
@@ -26,6 +32,34 @@ export async function listPedidos(filters: PedidoFilters) {
   params.set('pageSize', String(filters.pageSize ?? 20))
 
   return apiFetch<PaginatedResponse<Pedido>>(`/api/pedidos?${params.toString()}`)
+}
+
+export async function getPedido(id: string) {
+  return apiFetch<Pedido>(`/api/pedidos/${id}`)
+}
+
+export interface PendientesPorFechaFilters {
+  desde: string
+  hasta: string
+}
+
+export async function getPedidosPendientesPorFecha(filters: PendientesPorFechaFilters) {
+  const params = new URLSearchParams({ desde: filters.desde, hasta: filters.hasta })
+  return apiFetch<PedidosPendientesPorFecha[]>(`/api/pedidos/pendientes-por-fecha?${params.toString()}`)
+}
+
+export interface PedidoReporteFilters {
+  anio?: number
+  mes?: number
+}
+
+export async function getPedidoReporte(filters: PedidoReporteFilters = {}) {
+  const params = new URLSearchParams()
+  if (filters.anio) params.set('anio', String(filters.anio))
+  if (filters.mes) params.set('mes', String(filters.mes))
+
+  const query = params.toString()
+  return apiFetch<PedidoReporte>(`/api/pedidos/reporte${query ? `?${query}` : ''}`)
 }
 
 export async function createPedido(payload: PedidoPayload) {

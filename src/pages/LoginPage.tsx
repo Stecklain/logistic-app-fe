@@ -18,8 +18,8 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const { token } = await authService.login(email, password)
-      authService.saveSession(token)
+      const { token, user } = await authService.login(email, password)
+      authService.saveSession(token, user)
       navigate('/')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error inesperado')
@@ -96,8 +96,8 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <Link to="/tracking" className={styles.secondaryLink}>
-          Ir al tracking público
+        <Link to="/privacidad" className={styles.secondaryLink}>
+          Aviso de privacidad
         </Link>
       </section>
     </div>

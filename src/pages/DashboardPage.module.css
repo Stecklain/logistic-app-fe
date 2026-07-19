@@ -61,3 +61,15 @@
   text-decoration: none;
   font-weight: 700;
 }
+
+.chartCard {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  border: 1px solid rgba(19, 34, 63, 0.08);
+  padding: 1.25rem;
+}
+
+.chartCard h3 {
+  color: #13223f;
+  margin-bottom: 1rem;
+}

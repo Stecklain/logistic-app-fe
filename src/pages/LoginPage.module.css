@@ -132,7 +132,17 @@
     grid-template-columns: 1fr;
   }
 
+  .hero {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero h1 {
+    max-width: none;
+  }
+
   .card {
+    width: auto;
     margin: 0 1rem 1.5rem;
   }
 }

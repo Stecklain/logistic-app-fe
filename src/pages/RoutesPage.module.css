@@ -10,6 +10,106 @@
   font-size: 0.78rem;
 }
 
+.pendientesPanel {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  border: 1px solid rgba(19, 34, 63, 0.08);
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pendientesHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pendientesLabel {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #6b7890;
+}
+
+.semanaNav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.semanaNavBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #13223f;
+  padding: 0.2rem 0.3rem;
+}
+
+.semanaLabel {
+  font-weight: 700;
+  color: #13223f;
+  min-width: 9rem;
+  text-align: center;
+}
+
+.semanaHoyBtn {
+  border: 1px solid rgba(19, 34, 63, 0.15);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #13223f;
+}
+
+.pendientesVacio {
+  color: #6b7890;
+  font-size: 0.9rem;
+}
+
+.pendientesRow {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+
+.pendienteChip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(19, 34, 63, 0.12);
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #13223f;
+}
+
+.pendienteChip strong {
+  background: rgba(19, 34, 63, 0.08);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.pendienteChipActive {
+  border-color: #ef7f32;
+  background: #fff4ec;
+}
+
+.pendienteChipActive strong {
+  background: #ef7f32;
+  color: #fff;
+}
+
 .layout {
   display: grid;
   grid-template-columns: minmax(280px, 360px) 1fr;

@@ -4,6 +4,10 @@ import { buildFrontendServerCommand, resolveBrowserExecutable } from './tests/e2
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
+  // Los pedidos son datos globales (no aislados por test/usuario) contra una
+  // única base de test compartida por todos los specs. Correr más de un
+  // archivo en paralelo hace que un spec vea pedidos creados por otro.
+  workers: 1,
   globalSetup: './tests/e2e/global-setup.ts',
   globalTeardown: './tests/e2e/global-teardown.ts',
   use: {

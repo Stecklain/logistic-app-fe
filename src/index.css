@@ -20,6 +20,15 @@ body,
   min-height: 100%;
 }
 
+html,
+body {
+  /* overflow-x: hidden forzaría overflow-y a "auto" (regla de consistencia
+     de CSS Overflow), convirtiendo a body en su propio contenedor de scroll
+     y rompiendo el sidebar sticky en páginas largas. overflow-x: clip evita
+     ese efecto de lado: no arrastra overflow-y con él. */
+  overflow-x: clip;
+}
+
 body {
   min-height: 100vh;
 }

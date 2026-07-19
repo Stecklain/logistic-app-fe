@@ -1,0 +1,60 @@
+.page {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 480px;
+}
+
+.header h2 {
+  color: #13223f;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #b05c25;
+  font-size: 0.78rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  border: 1px solid rgba(19, 34, 63, 0.08);
+  padding: 1.25rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.field span {
+  font-weight: 700;
+}
+
+.field input {
+  border: 1px solid rgba(19, 34, 63, 0.12);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+}
+
+.primaryBtn {
+  margin-top: 1.25rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  background: #13223f;
+  color: #fff;
+}
+
+.error {
+  margin-top: 0.8rem;
+  color: #9b3121;
+}
+
+.success {
+  margin-top: 0.8rem;
+  color: #2f7a4d;
+}

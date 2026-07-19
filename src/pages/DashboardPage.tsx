@@ -1,4 +1,11 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
+import MonthlyStatusTrendChart, {
+  MonthlyStatusTrendPoint,
+} from '../components/MonthlyStatusTrendChart'
+import { authService } from '../services/auth'
+import { getPedidoReporte } from '../services/pedidos'
+import type { PedidoReporte } from '../types/domain'
 import styles from './DashboardPage.module.css'
 
 const cards = [
@@ -12,14 +19,31 @@ const cards = [
     description: 'Generación persistida de recorridos con origen manual y mapa operativo.',
     to: '/rutas',
   },
-  {
-    title: 'Tracking público',
-    description: 'Consulta pública por código sin exponer datos sensibles.',
-    to: '/tracking',
-  },
 ]
 
+function buildTrendData(porEstadoYMes: PedidoReporte['porEstadoYMes']): MonthlyStatusTrendPoint[] {
+  const byMonth = new Map<string, { entregados: number; cancelados: number }>()
+
+  for (const row of porEstadoYMes) {
+    const entry = byMonth.get(row.mes) ?? { entregados: 0, cancelados: 0 }
+    if (row.estado === 'entregado') entry.entregados = row.total
+    if (row.estado === 'cancelado') entry.cancelados = row.total
+    byMonth.set(row.mes, entry)
+  }
+
+  const ultimosMeses = Array.from(byMonth.keys()).sort().slice(-6)
+  return ultimosMeses.map((mes) => ({ mes, ...byMonth.get(mes)! }))
+}
+
 export default function DashboardPage() {
+  const isAdmin = authService.getRole() === 'admin'
+
+  const reporteQuery = useQuery({
+    queryKey: ['pedidos-reporte', {}],
+    queryFn: () => getPedidoReporte(),
+    enabled: isAdmin,
+  })
+
   return (
     <section className={styles.page}>
       <div className={styles.hero}>
@@ -42,6 +66,16 @@ export default function DashboardPage() {
           </article>
         ))}
       </div>
+
+      {isAdmin ? (
+        <div className={styles.chartCard}>
+          <h3>Entregados vs cancelados por mes</h3>
+          {reporteQuery.isLoading ? <p>Cargando…</p> : null}
+          {reporteQuery.data ? (
+            <MonthlyStatusTrendChart data={buildTrendData(reporteQuery.data.porEstadoYMes)} />
+          ) : null}
+        </div>
+      ) : null}
     </section>
   )
 }

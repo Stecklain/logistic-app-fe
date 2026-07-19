@@ -1,0 +1,140 @@
+.wrap {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #52514e;
+  font-weight: 600;
+}
+
+.legendLine {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.tableToggle {
+  border: none;
+  background: #eef2f8;
+  color: #13223f;
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chartArea {
+  position: relative;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gridline {
+  stroke: #e1e0d9;
+  stroke-width: 1;
+}
+
+.tickLabel {
+  fill: #898781;
+  font-size: 10px;
+}
+
+.endLabel {
+  fill: #0b0b0b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.crosshair {
+  stroke: #c3c2b7;
+  stroke-width: 1;
+}
+
+.hitArea {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.tooltip {
+  position: absolute;
+  top: 8px;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(19, 34, 63, 0.1);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  box-shadow: 0 12px 32px rgba(19, 34, 63, 0.18);
+  font-size: 0.82rem;
+  color: #0b0b0b;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tooltip strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #52514e;
+  font-weight: 700;
+}
+
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tooltipKey {
+  width: 10px;
+  height: 2px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.empty {
+  color: rgba(19, 34, 63, 0.6);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid rgba(19, 34, 63, 0.08);
+  font-size: 0.88rem;
+}
+
+.table th {
+  color: #13223f;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+}

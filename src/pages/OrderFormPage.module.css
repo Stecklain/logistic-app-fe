@@ -1,0 +1,87 @@
+.page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.header h2 {
+  color: #13223f;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #b05c25;
+  font-size: 0.78rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  border: 1px solid rgba(19, 34, 63, 0.08);
+  padding: 1.25rem;
+}
+
+.formLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.fields {
+  display: grid;
+  gap: 0rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.field span {
+  font-weight: 700;
+}
+
+.field input {
+  border: 1px solid rgba(19, 34, 63, 0.12);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.primaryBtn,
+.ghostBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primaryBtn {
+  background: #13223f;
+  color: #fff;
+}
+
+.ghostBtn {
+  background: #eef2f8;
+  color: #13223f;
+}
+
+.error {
+  margin-top: 0.8rem;
+  color: #9b3121;
+}
+
+@media (max-width: 980px) {
+  .formLayout {
+    grid-template-columns: 1fr;
+  }
+}

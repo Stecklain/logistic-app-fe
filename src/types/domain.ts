@@ -1,6 +1,17 @@
+export type UserRole = 'admin' | 'logistica'
+
 export interface AuthUser {
   id: string
   email: string
+  role: UserRole
+}
+
+export interface ManagedUser {
+  id: string
+  email: string
+  role: UserRole
+  active: boolean
+  createdAt: string
 }
 
 export interface LoginResponse {
@@ -44,6 +55,7 @@ export interface Ruta {
   id: string
   fecha: string
   estado: 'planificada' | 'en_curso' | 'cerrada'
+  zona: string | null
   origenTexto: string
   origenLat: number
   origenLng: number
@@ -56,4 +68,15 @@ export interface TrackingResponse {
   codigoTracking: string
   estado: PedidoEstado
   fechaEntrega: string
+}
+
+export interface PedidosPendientesPorFecha {
+  fecha: string
+  total: number
+}
+
+export interface PedidoReporte {
+  porLocalidadYMes: Array<{ localidad: string; mes: string; total: number }>
+  porEstado: Array<{ estado: PedidoEstado; total: number }>
+  porEstadoYMes: Array<{ estado: PedidoEstado; mes: string; total: number }>
 }

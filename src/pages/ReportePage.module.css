@@ -1,0 +1,139 @@
+.page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header h2 {
+  color: #13223f;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #b05c25;
+  font-size: 0.78rem;
+}
+
+.printBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
+  font-weight: 700;
+  background: #13223f;
+  color: #fff;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  border: 1px solid rgba(19, 34, 63, 0.08);
+  padding: 1.25rem;
+}
+
+.filtersPanel {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterField {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.filterField span {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.filterField select {
+  border: 1px solid rgba(19, 34, 63, 0.12);
+  border-radius: 14px;
+  padding: 0.7rem 0.9rem;
+}
+
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.statTile {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 16px;
+  font-weight: 700;
+}
+
+.statTile strong {
+  font-size: 1.4rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid rgba(19, 34, 63, 0.08);
+}
+
+th {
+  color: #13223f;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.emptyState {
+  text-align: center;
+  color: rgba(19, 34, 63, 0.6);
+  padding: 1.5rem !important;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #13223f;
+}
+
+.pageBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  font-weight: 700;
+  background: #eef2f8;
+  color: #13223f;
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media print {
+  .pagination,
+  .printBtn {
+    display: none;
+  }
+}

@@ -16,7 +16,7 @@ export async function getRutaById(id: string) {
 }
 
 export async function generateRuta(payload: GenerateRutaPayload) {
-  return apiFetch<Ruta>('/api/rutas/generar', {
+  return apiFetch<Ruta[]>('/api/rutas/generar', {
     method: 'POST',
     body: JSON.stringify(payload),
   })
